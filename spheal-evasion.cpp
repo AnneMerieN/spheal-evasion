@@ -5,7 +5,7 @@ int main(void) {
     // Window dimensions
     int width = 800;
     int height = 460;
-    InitWindow(width, height, "Anne's Window!");
+    InitWindow(width, height, "Spheal Evasion!");
 
     // Load textures (make sure these files are in your working directory)
     Texture2D sphealTexture = LoadTexture("Spheal.png");
