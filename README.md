@@ -1,24 +1,37 @@
-# Axe Game
+# Spheal Evasion
 
-## Overview
-Axe Game is an immersive action-adventure game where players master the art of axe combat. Dive into challenging levels, battle fierce enemies, and explore beautifully crafted environments. Whether you're a casual gamer or a seasoned warrior, Axe Game offers a dynamic experience that will test your skills and strategy.
+**Spheal Evasion** is a simple 2D game built in C using [Raylib](https://www.raylib.com/). In this game, you control a small Spheal that collects fish while evading a chasing orca. The game features a welcoming menu screen, collectible items, and a game-over state that allows you to restart without having to close the program.
 
 ## Features
-- **Dynamic Combat System:** Experience fast-paced, action-packed combat with intuitive controls.
-- **Stunning Visuals:** Enjoy high-quality graphics and meticulously designed levels.
-- **Multiple Game Modes:** Choose between Story Mode, Arcade Mode, and Challenge Mode for varied gameplay.
-- **Customizable Controls:** Tailor your gameplay with adjustable settings to suit your style.
-- **Achievements & Leaderboards:** Unlock achievements and compete with friends on global leaderboards.
 
-## Getting Started
+- **Home/Welcome Screen:**  
+  A blue-themed menu that welcomes you to Spheal Adventure. Press **ENTER** to start the game.
 
-### Prerequisites
-- A modern operating system (Windows, macOS, or Linux) or compatible gaming device.
-- [Game engine/runtime requirements] (e.g., Unity, Unreal Engine, or other frameworks if applicable).
-- Internet connection for downloading updates and accessing online features.
+- **Gameplay Mechanics:**  
+  - **Movement:** Use the **W**, **A**, **S**, and **D** keys to move Spheal in all four directions.
+  - **Collectibles:** A fish spawns at a random location. When Spheal touches the fish, it is collected and disappears, and your fish counter increases.
+  - **Enemy Behavior:** An orca chases Spheal. If the orca collides with Spheal, the game ends.
 
-### Installation
-1. **Clone the Repository:**  
-   Open your terminal and run:
-   ```bash
-   git clone https://github.com/AnneMerieN/axe-game.git
+- **Game Over & Restart:**  
+  When Spheal collides with the orca, a "Game Over" screen is displayed. Press **R** to return to the menu and restart the game.
+
+## Controls
+
+- **W / A / S / D:** Move Spheal up, left, down, and right.
+- **ENTER:** Start the game from the welcome screen.
+- **R:** Restart the game when on the Game Over screen.
+
+## Requirements
+
+- **Raylib:**  
+  Download and install Raylib from [raylib.com](https://www.raylib.com/).
+
+- **C Compiler:**  
+  Use a C compiler such as GCC to build the game.
+
+## Compilation
+
+For Linux or macOS, you can compile the game with a command similar to:
+
+```bash
+gcc spheal_adventure.c -o spheal_adventure -lraylib -lm -lpthread -ldl -lrt -lX11
