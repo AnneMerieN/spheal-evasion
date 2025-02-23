@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include <math.h>  // For sqrt()
+#include <math.h>
 
 int main(void) {
     // Window dimensions
@@ -7,76 +7,54 @@ int main(void) {
     int height = 460;
     InitWindow(width, height, "Anne's Window!");
 
-    // Load textures (ensure these files are in your working directory)
+    // Load textures (make sure these files are in your working directory)
     Texture2D sphealTexture = LoadTexture("Spheal.png");
     Texture2D orcaTexture = LoadTexture("orca-whale.png");
 
-    // Set initial positions for the images
+    // Game state variables (initial values)
     int sphealX = 200;
     int sphealY = 200;
     int orcaX = 400;
     int orcaY = 0;
-
-    // Define scale factors: spheal is smaller, orca is larger
-    float sphealScale = 0.1f;
-    float orcaScale = 0.5f;
-
-    // Game over flag
+    float chaseSpeed = 3.0f;  // Adjust this for chasing speed
     bool gameOver = false;
 
-    // Define chase speed for the orca (smaller value means slower chasing)
-    float chaseSpeed = 3.0f;
+    // Scale factors for each image
+    float sphealScale = 0.1f; // spheal image is small
+    float orcaScale = 0.5f;   // orca image is larger
 
     SetTargetFPS(60); // Limits game loop to 60 fps
 
     while (!WindowShouldClose()) {
+        // If game is not over, update game logic
         if (!gameOver) {
-            // Update orca position to chase the spheal:
+            // Orca chasing behavior: Calculate direction toward the spheal
             float diffX = sphealX - orcaX;
             float diffY = sphealY - orcaY;
             float distance = sqrt(diffX * diffX + diffY * diffY);
-
-            // Only update if the distance is not zero (avoid division by zero)
             if (distance != 0) {
                 orcaX += (int)((diffX / distance) * chaseSpeed);
                 orcaY += (int)((diffY / distance) * chaseSpeed);
             }
 
-            // Update spheal movement with key presses (W, A, S, D for 4-directional movement)
-            if (IsKeyDown(KEY_D)) {
-                sphealX += 10;
-            }
-            if (IsKeyDown(KEY_A)) {
-                sphealX -= 10;
-            }
-            if (IsKeyDown(KEY_S)) {
-                sphealY += 10;
-            }
-            if (IsKeyDown(KEY_W)) {
-                sphealY -= 10;
-            }
+            // Update spheal movement using WASD (or A/D for horizontal, W/S for vertical)
+            if (IsKeyDown(KEY_D)) sphealX += 10;
+            if (IsKeyDown(KEY_A)) sphealX -= 10;
+            if (IsKeyDown(KEY_S)) sphealY += 10;
+            if (IsKeyDown(KEY_W)) sphealY -= 10;
 
-            // Calculate half the width and height of the spheal texture after scaling
+            // Calculate half dimensions for clamping (based on spheal's scaled size)
             float halfSphealWidth = sphealTexture.width * sphealScale / 2.0f;
             float halfSphealHeight = sphealTexture.height * sphealScale / 2.0f;
 
-            // Clamp spheal's position so it stays completely on-screen horizontally
-            if (sphealX < halfSphealWidth) {
-                sphealX = halfSphealWidth;
-            }
-            if (sphealX > width - halfSphealWidth) {
-                sphealX = width - halfSphealWidth;
-            }
+            // Clamp spheal's horizontal position
+            if (sphealX < halfSphealWidth) sphealX = halfSphealWidth;
+            if (sphealX > width - halfSphealWidth) sphealX = width - halfSphealWidth;
+            // Clamp spheal's vertical position
+            if (sphealY < halfSphealHeight) sphealY = halfSphealHeight;
+            if (sphealY > height - halfSphealHeight) sphealY = height - halfSphealHeight;
 
-            // Clamp spheal's position so it stays completely on-screen vertically
-            if (sphealY < halfSphealHeight) {
-                sphealY = halfSphealHeight;
-            }
-            if (sphealY > height - halfSphealHeight) {
-                sphealY = height - halfSphealHeight;
-            }
-
-            // Create rectangles for collision detection based on scaled dimensions
+            // Create rectangles for collision detection (using scaled dimensions)
             Rectangle sphealRect = {
                 sphealX - halfSphealWidth,
                 sphealY - halfSphealHeight,
@@ -90,9 +68,19 @@ int main(void) {
                 orcaTexture.height * orcaScale
             };
 
-            // Check collision: if it happens, set gameOver to true
+            // Check for collision between spheal and orca
             if (CheckCollisionRecs(sphealRect, orcaRect)) {
                 gameOver = true;
+            }
+        } else {
+            // If the game is over, allow the user to press 'R' to restart
+            if (IsKeyPressed(KEY_R)) {
+                // Reset game state variables to initial conditions
+                sphealX = 200;
+                sphealY = 200;
+                orcaX = 400;
+                orcaY = 0;
+                gameOver = false;
             }
         }
 
@@ -100,10 +88,13 @@ int main(void) {
         ClearBackground(WHITE);
 
         if (gameOver) {
+            // Display game over message and restart instructions
             int textWidth = MeasureText("Game Over", 20);
-            DrawText("Game Over", width / 2 - textWidth / 2, height / 2, 20, RED);
+            DrawText("Game Over", width / 2 - textWidth / 2, height / 2 - 20, 20, RED);
+            int restartTextWidth = MeasureText("Press R to Restart", 20);
+            DrawText("Press R to Restart", width / 2 - restartTextWidth / 2, height / 2 + 10, 20, RED);
         } else {
-            // Draw the spheal texture, centered at (sphealX, sphealY)
+            // Draw the spheal texture, centered at (sphealX, sphealY) with scaling
             DrawTextureEx(
                 sphealTexture,
                 (Vector2){ sphealX - (sphealTexture.width * sphealScale) / 2.0f,
@@ -113,7 +104,7 @@ int main(void) {
                 WHITE
             );
 
-            // Draw the orca texture at its current position
+            // Draw the orca texture at its current position with scaling
             DrawTextureEx(
                 orcaTexture,
                 (Vector2){ orcaX, orcaY },
@@ -126,7 +117,7 @@ int main(void) {
         EndDrawing();
     }
 
-    // Unload textures and close window
+    // Unload textures and close the window
     UnloadTexture(sphealTexture);
     UnloadTexture(orcaTexture);
     CloseWindow();
