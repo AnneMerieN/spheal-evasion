@@ -125,9 +125,9 @@ int main(void) {
         switch (currentScreen) {
             case MENU: {
                 int titleWidth = MeasureText("SPHEAL EVASION", 30);
-                DrawText("SPHEAL EVASION", screenWidth/2 - titleWidth/2, screenHeight/2 - 50, 30, DARKBLUE);
+                DrawText("SPHEAL EVASION", screenWidth/2 - titleWidth/2, screenHeight/2 - 50, 30, WHITE);
                 int instrWidth = MeasureText("Press ENTER to start", 20);
-                DrawText("Press ENTER to start", screenWidth/2 - instrWidth/2, screenHeight/2, 20, DARKGRAY);
+                DrawText("Press ENTER to start", screenWidth/2 - instrWidth/2, screenHeight/2, 20, WHITE);
                 break;
             }
             case GAMEPLAY: {
@@ -166,7 +166,7 @@ int main(void) {
                 int gameOverWidth = MeasureText("Game Over", 30);
                 DrawText("Game Over", screenWidth/2 - gameOverWidth/2, screenHeight/2 - 50, 30, RED);
                 int restartWidth = MeasureText("Press R to go to Menu", 20);
-                DrawText("Press M to go to Menu", screenWidth/2 - restartWidth/2, screenHeight/2, 20, DARKGRAY);
+                DrawText("Press M to go to Menu", screenWidth/2 - restartWidth/2, screenHeight/2, 20, WHITE);
                 break;
             }
         }
