@@ -120,7 +120,7 @@ int main(void) {
 
         // Draw section
         BeginDrawing();
-        ClearBackground(WHITE);
+        ClearBackground(BLUE);
 
         switch (currentScreen) {
             case MENU: {
